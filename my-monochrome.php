@@ -205,7 +205,7 @@ body.admin-color-mymono #adminmenu li.menu-top>a:focus {
 body.admin-color-mymono #adminmenu li.menu-top .wp-menu-image,
 body.admin-color-mymono #adminmenu div.wp-menu-image:before,
 body.admin-color-mymono #adminmenu li.wp-has-submenu .wp-submenu .wp-menu-image {
-	color: %2$s;
+	color: inherit;
 }
 body.admin-color-mymono #adminmenu li.menu-top.wp-has-current-submenu .wp-menu-image,
 body.admin-color-mymono #adminmenu li.menu-top.wp-has-current-submenu div.wp-menu-image:before,
