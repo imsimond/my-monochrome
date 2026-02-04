@@ -1,9 +1,9 @@
 === My Monochrome Admin Palette ===
 Contributors: s1m0nd
-Tags: admin, color, scheme, theme, monochrome
-Requires at least: 5.0
-Tested up to: 6.4
-Requires PHP: 7.4
+Tags: admin, color scheme, theme, monochrome
+Requires at least: 6.3
+Tested up to: 6.9
+Requires PHP: 8.0
 Stable tag: 2026.02
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,7 +20,7 @@ It was inspired by testing sessions, involving multiple different WordPress user
 
 1. Install the plugin in the usual way.
 2. Go to your user profile page ('Users' -> 'Profile').
-3. Select the "My Monochrome" admin color scheme.
+3. Select the "Mono" admin color scheme.
 4. Use the randomize button or the color picker to select a color. The new scheme will be applied immediately.
 5. If you used the color picker, click the icon again to close it.
 
@@ -44,7 +44,7 @@ Sorry, we won't be adding this feature. The clue is in the name.
 
 == Screenshots ==
 
-1. The "My Monochrome" color scheme option on the user profile page.
+1. The "Mono" color scheme option on the user profile page.
 
 == Changelog ==
 
