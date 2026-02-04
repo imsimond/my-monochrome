@@ -1,6 +1,6 @@
 === My Monochrome Admin Palette ===
 Contributors: s1m0nd
-Tags: admin, color, scheme, theme, monochrome, custom
+Tags: admin, color, scheme, theme, monochrome
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
