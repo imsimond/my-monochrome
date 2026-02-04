@@ -294,7 +294,12 @@ body.admin-color-mymono .components-form-toggle.is-checked .components-form-togg
 body.admin-color-mymono .health-check-tab.active,
 body.admin-color-mymono .privacy-settings-tab.active {
 	box-shadow: inset 0 -3px %1$s;
-}',
+}
+body.admin-color-mymono #collapse-button {
+    color: %2$s;
+    opacity: 0.5;
+}
+',
 		$palette['base_color'],
 		$palette['text_color'],
 		$palette['base_lighter'],
@@ -394,27 +399,49 @@ function mymono_enqueue_color_picker( $hook ) {
 
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_script( 'wp-color-picker' );
+
+	wp_register_style( 'mymono-admin', false, array(), '2026.02' );
+	wp_enqueue_style( 'mymono-admin' );
+	wp_add_inline_style( 'mymono-admin', mymono_get_admin_inline_styles() );
+
+	wp_register_script( 'mymono-admin', '', array( 'jquery', 'wp-color-picker' ), '2026.02', true );
+	wp_enqueue_script( 'mymono-admin' );
+	wp_add_inline_script( 'mymono-admin', mymono_get_admin_inline_script(), 'after' );
 }
 add_action( 'admin_enqueue_scripts', 'mymono_enqueue_color_picker' );
 
 /**
- * Add dashicons for randomize and color picker.
+ * Build admin inline script.
+ *
+ * @return string
  */
-function mymono_add_mymono_icon_button() {
-	?>
-	<script type="text/javascript">
-jQuery(function($){
-	var mymonoOption = $('input[value="mymono"]').closest('.color-option');
-	if(!mymonoOption.length) return;
+function mymono_get_admin_inline_script() {
+	$palette  = mymono_get_or_generate_palette();
+	$settings = array(
+		'baseColor'   => $palette['base_color'],
+		'setNonce'    => wp_create_nonce( 'mymono-set-palette' ),
+		'randomNonce' => wp_create_nonce( 'mymono-randomize-palette' ),
+	);
+
+	$settings_json = wp_json_encode( $settings );
+
+	return "jQuery(function($){
+	var mymonoSettings = {$settings_json};
+	var mymonoOption = $('input[value=\"mymono\"]').closest('.color-option');
+	if (!mymonoOption.length) {
+		return;
+	}
 	mymonoOption.addClass('mymono-color-option');
 
 	var label = mymonoOption.find('label');
-	if(!label.length) return;
+	if (!label.length) {
+		return;
+	}
 
-	var iconBtn = $('<span class="dashicons dashicons-randomize" title="Randomize colors"></span>');
-	var pickBtn = $('<span class="dashicons dashicons-color-picker" title="Choose a color"></span>');
+	var iconBtn = $('<span class=\"dashicons dashicons-randomize\" title=\"Randomize colors\"></span>');
+	var pickBtn = $('<span class=\"dashicons dashicons-color-picker\" title=\"Choose a color\"></span>');
 
-	var pickInput = $('<input type="text" class="mymono-color-picker" value="<?php echo esc_attr( mymono_get_or_generate_palette()['base_color'] ); ?>" style="position:absolute;left:-9999px;"/>');
+	var pickInput = $('<input type=\"text\" class=\"mymono-color-picker\" value=\"' + mymonoSettings.baseColor + '\" style=\"position:absolute;left:-9999px;\"/>');
 	mymonoOption.append(pickInput);
 
 	pickInput.wpColorPicker({
@@ -424,13 +451,13 @@ jQuery(function($){
 			var newColor = ui.color.toString();
 			$.post(ajaxurl,{
 				action:'mymono_set_palette_ajax',
-				_wpnonce:'<?php echo esc_js( wp_create_nonce( 'mymono-set-palette' ) ); ?>',
+				_wpnonce:mymonoSettings.setNonce,
 				color:newColor
 			}, function(response){
 				if(response.success){
 					$('#mymono-inline').remove();
-					$('<style id="mymono-inline"></style>').text(response.data.css).appendTo('head');
-					const shadeBox = mymonoOption.find('.color-palette-shade');
+					$('<style id=\"mymono-inline\"></style>').text(response.data.css).appendTo('head');
+					var shadeBox = mymonoOption.find('.color-palette-shade');
 					shadeBox.css('background-color',response.data.base);
 					shadeBox.attr('title', response.data.base);
 				}
@@ -447,23 +474,23 @@ jQuery(function($){
 		var pickerContainer = pickInput.closest('.wp-picker-container');
 		var target = $(event.target);
 
-		if ( ! pickerContainer.length ) {
+		if (!pickerContainer.length) {
 			return;
 		}
 
-		if ( ! pickerContainer.find('.iris-picker').is(':visible') ) {
+		if (!pickerContainer.find('.iris-picker').is(':visible')) {
 			return;
 		}
 
-		if ( target.closest('.wp-picker-container').length ) {
+		if (target.closest('.wp-picker-container').length) {
 			return;
 		}
 
-		if ( target.closest('.dashicons-color-picker').length ) {
+		if (target.closest('.dashicons-color-picker').length) {
 			return;
 		}
 
-		if ( target.closest('.mymono-color-picker').length ) {
+		if (target.closest('.mymono-color-picker').length) {
 			return;
 		}
 
@@ -474,11 +501,11 @@ jQuery(function($){
 		e.preventDefault();
 		$.post(ajaxurl,{
 			action:'mymono_randomize_palette_ajax',
-			_wpnonce:'<?php echo esc_js( wp_create_nonce( 'mymono-randomize-palette' ) ); ?>'
+			_wpnonce:mymonoSettings.randomNonce
 		}, function(response){
 			if(response.success){
 				$('#mymono-inline').remove();
-				$('<style id="mymono-inline"></style>').text(response.data.css).appendTo('head');
+				$('<style id=\"mymono-inline\"></style>').text(response.data.css).appendTo('head');
 				mymonoOption.find('.color-palette-shade').css('background-color',response.data.base);
 				pickInput.wpColorPicker('color', response.data.base);
 			}
@@ -486,37 +513,32 @@ jQuery(function($){
 	});
 
 	label.append(iconBtn,pickBtn);
-});
-	</script>
-	<?php
+});";
 }
-add_action( 'admin_footer-profile.php', 'mymono_add_mymono_icon_button' );
 
 /**
- * Add custom styling for the color picker and randomize button.
+ * Build admin inline styles.
+ *
+ * @return string
  */
-function mymono_add_styling() {
-	?>
-	<style>
-	.color-option { position: relative; }
-	.mymono-color-option .dashicons-randomize,
-	.mymono-color-option .dashicons-color-picker {
-		font-size:16px;
-		cursor:pointer;
-		margin-left:5px;
-	}
-	.dashicons-randomize:hover, .dashicons-color-picker:hover { 
-		color:#00a0d2;
-	}
-
-	/* hide Iris buttons to prevent layout break */
-	.mymono-color-option .wp-picker-container {
-		position: absolute !important;
-	}
-	.mymono-color-option .wp-picker-container button {
-		display: none !important;
-	}
-	</style>
-	<?php
+function mymono_get_admin_inline_styles() {
+	return '.color-option { position: relative; }
+.mymono-color-option .dashicons-randomize,
+.mymono-color-option .dashicons-color-picker {
+	font-size: 16px;
+	cursor: pointer;
+	margin-left: 5px;
 }
-add_action( 'admin_head-profile.php', 'mymono_add_styling' );
+.dashicons-randomize:hover,
+.dashicons-color-picker:hover {
+	color: #00a0d2;
+}
+
+/* Hide Iris buttons to prevent layout break. */
+.mymono-color-option .wp-picker-container {
+	position: absolute !important;
+}
+.mymono-color-option .wp-picker-container button {
+	display: none !important;
+}';
+}
