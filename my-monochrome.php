@@ -132,7 +132,7 @@ function mymono_register_mymono_palette_option() {
 
 	wp_admin_css_color(
 		'mymono',
-		__( 'My Monochrome', 'my-monochrome' ),
+		__( 'Mono', 'my-monochrome' ),
 		'',
 		array( $palette['base_color'] )
 	);
@@ -384,8 +384,14 @@ add_action(
 
 /**
  * Enqueue color picker assets.
+ *
+ * @param string $hook The current admin page hook.
  */
-function mymono_enqueue_color_picker() {
+function mymono_enqueue_color_picker( $hook ) {
+	if ( 'profile.php' !== $hook && 'user-edit.php' !== $hook ) {
+		return;
+	}
+
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_script( 'wp-color-picker' );
 }
@@ -435,6 +441,33 @@ jQuery(function($){
 	pickBtn.on('click', function(e){
 		e.preventDefault();
 		pickInput.iris('toggle');
+	});
+
+	$(document).on('mousedown.mymonoColorPicker', function(event){
+		var pickerContainer = pickInput.closest('.wp-picker-container');
+		var target = $(event.target);
+
+		if ( ! pickerContainer.length ) {
+			return;
+		}
+
+		if ( ! pickerContainer.find('.iris-picker').is(':visible') ) {
+			return;
+		}
+
+		if ( target.closest('.wp-picker-container').length ) {
+			return;
+		}
+
+		if ( target.closest('.dashicons-color-picker').length ) {
+			return;
+		}
+
+		if ( target.closest('.mymono-color-picker').length ) {
+			return;
+		}
+
+		pickInput.iris('hide');
 	});
 
 	iconBtn.on('click', function(e){
