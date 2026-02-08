@@ -124,10 +124,50 @@ function mymono_get_or_generate_palette( $user_id = null ) {
 }
 
 /**
+ * Resolve the user ID being edited on profile screens.
+ *
+ * Falls back to the current user if no valid target is available.
+ *
+ * @return int
+ */
+function mymono_get_profile_target_user_id() {
+	$user_id = 0;
+
+	$filtered_user_id = filter_input( INPUT_GET, 'user_id', FILTER_VALIDATE_INT );
+	if ( false !== $filtered_user_id && null !== $filtered_user_id ) {
+		$user_id = absint( $filtered_user_id );
+	}
+
+	if ( $user_id && current_user_can( 'edit_user', $user_id ) ) {
+		return $user_id;
+	}
+
+	return get_current_user_id();
+}
+
+/**
+ * Resolve the user ID for profile-related AJAX requests.
+ *
+ * Falls back to the current user if the supplied ID is missing or unauthorized.
+ *
+ * @param int $user_id Candidate user ID.
+ * @return int
+ */
+function mymono_get_profile_target_user_id_from_request( $user_id ) {
+	$user_id = absint( $user_id );
+
+	if ( $user_id && current_user_can( 'edit_user', $user_id ) ) {
+		return $user_id;
+	}
+
+	return get_current_user_id();
+}
+
+/**
  * Register mymono palette option.
  */
 function mymono_register_mymono_palette_option() {
-	$user_id = get_current_user_id();
+	$user_id = mymono_get_profile_target_user_id();
 	$palette = mymono_get_or_generate_palette( $user_id );
 
 	wp_admin_css_color(
@@ -331,7 +371,12 @@ add_action(
 	function () {
 		check_ajax_referer( 'mymono-randomize-palette' );
 
-		$user_id    = get_current_user_id();
+		$user_id          = 0;
+		$filtered_user_id = filter_input( INPUT_POST, 'user_id', FILTER_VALIDATE_INT );
+		if ( false !== $filtered_user_id && null !== $filtered_user_id ) {
+			$user_id = absint( $filtered_user_id );
+		}
+		$user_id    = mymono_get_profile_target_user_id_from_request( $user_id );
 		$base_color = mymono_generate_base_color();
 		$palette    = array(
 			'base_color'      => $base_color,
@@ -361,7 +406,12 @@ add_action(
 	function () {
 		check_ajax_referer( 'mymono-set-palette' );
 
-		$user_id = get_current_user_id();
+		$user_id          = 0;
+		$filtered_user_id = filter_input( INPUT_POST, 'user_id', FILTER_VALIDATE_INT );
+		if ( false !== $filtered_user_id && null !== $filtered_user_id ) {
+			$user_id = absint( $filtered_user_id );
+		}
+		$user_id = mymono_get_profile_target_user_id_from_request( $user_id );
 		$color   = '#000000';
 		if ( isset( $_POST['color'] ) && ! empty( $_POST['color'] ) ) {
 			$color = sanitize_hex_color( wp_unslash( $_POST['color'] ) );
@@ -397,6 +447,11 @@ function mymono_enqueue_color_picker( $hook ) {
 		return;
 	}
 
+	$user_id = mymono_get_profile_target_user_id();
+	if ( ! $user_id || ! current_user_can( 'edit_user', $user_id ) ) {
+		return;
+	}
+
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_script( 'wp-color-picker' );
 
@@ -416,11 +471,13 @@ add_action( 'admin_enqueue_scripts', 'mymono_enqueue_color_picker' );
  * @return string
  */
 function mymono_get_admin_inline_script() {
-	$palette  = mymono_get_or_generate_palette();
+	$user_id  = mymono_get_profile_target_user_id();
+	$palette  = mymono_get_or_generate_palette( $user_id );
 	$settings = array(
 		'baseColor'   => $palette['base_color'],
 		'setNonce'    => wp_create_nonce( 'mymono-set-palette' ),
 		'randomNonce' => wp_create_nonce( 'mymono-randomize-palette' ),
+		'userId'      => $user_id,
 	);
 
 	$settings_json = wp_json_encode( $settings );
@@ -452,7 +509,8 @@ function mymono_get_admin_inline_script() {
 			$.post(ajaxurl,{
 				action:'mymono_set_palette_ajax',
 				_wpnonce:mymonoSettings.setNonce,
-				color:newColor
+				color:newColor,
+				user_id:mymonoSettings.userId
 			}, function(response){
 				if(response.success){
 					$('#mymono-inline').remove();
@@ -499,12 +557,13 @@ function mymono_get_admin_inline_script() {
 
 	iconBtn.on('click', function(e){
 		e.preventDefault();
-		$.post(ajaxurl,{
-			action:'mymono_randomize_palette_ajax',
-			_wpnonce:mymonoSettings.randomNonce
-		}, function(response){
-			if(response.success){
-				$('#mymono-inline').remove();
+			$.post(ajaxurl,{
+				action:'mymono_randomize_palette_ajax',
+				_wpnonce:mymonoSettings.randomNonce,
+				user_id:mymonoSettings.userId
+			}, function(response){
+				if(response.success){
+					$('#mymono-inline').remove();
 				$('<style id=\"mymono-inline\"></style>').text(response.data.css).appendTo('head');
 				mymonoOption.find('.color-palette-shade').css('background-color',response.data.base);
 				pickInput.wpColorPicker('color', response.data.base);
