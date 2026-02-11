@@ -1,0 +1,155 @@
+/* Admin menu background */
+body.admin-color-mymono #adminmenu,
+body.admin-color-mymono #adminmenuback,
+body.admin-color-mymono #adminmenuwrap,
+body.admin-color-mymono #adminmenu .wp-submenu,
+body.admin-color-mymono #adminmenuback,
+body.admin-color-mymono #adminmenuwmymono {
+	background-color: var(--mymono-base);
+}
+body.admin-color-mymono #adminmenu a {
+	color: var(--mymono-text);
+}
+body.admin-color-mymono #adminmenu .wp-has-current-submenu .wp-submenu,
+body.admin-color-mymono #adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+body.admin-color-mymono #adminmenu .wp-submenu,
+body.admin-color-mymono #adminmenu a.wp-has-current-submenu:focus + .wp-submenu {
+	background-color: var(--mymono-adminbar-darker);
+}
+body.admin-color-mymono #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after,
+body.admin-color-mymono #adminmenu li.wp-has-submenu.wp-not-current-submenu:focus-within:after {
+	border-right-color: var(--mymono-adminbar-darker);
+}
+
+/* Top-level menu and submenu text */
+body.admin-color-mymono #adminmenu li.wp-has-submenu .wp-submenu a {
+	color: #ffffff;
+	opacity: 0.7;
+}
+body.admin-color-mymono #adminmenu li.wp-has-current-submenu .wp-submenu li.current,
+body.admin-color-mymono #adminmenu li.wp-has-current-submenu .wp-submenu li.current a {
+	opacity: 1;
+}
+
+/* Top-level menu hover */
+body.admin-color-mymono #adminmenu li.menu-top:hover > a,
+body.admin-color-mymono #adminmenu li.wp-has-current-submenu:hover > a,
+body.admin-color-mymono #adminmenu li.wp-has-submenu .wp-submenu li:hover,
+body.admin-color-mymono #adminmenu li.menu-top:hover,
+body.admin-color-mymono #adminmenu li.opensub > a.menu-top,
+body.admin-color-mymono #adminmenu li > a.menu-top:focus,
+body.admin-color-mymono #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
+body.admin-color-mymono #wpadminbar .ab-top-menu > li.hover > .ab-item,
+body.admin-color-mymono #wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
+body.admin-color-mymono #wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item,
+body.admin-color-mymono #wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item:focus {
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #ffffff;
+}
+body.admin-color-mymono #adminmenu .wp-submenu a:focus,
+body.admin-color-mymono #adminmenu .wp-submenu a:hover,
+body.admin-color-mymono #adminmenu a:hover,
+body.admin-color-mymono #adminmenu li.menu-top > a:focus {
+	color: var(--mymono-text);
+	opacity: 0.8;
+}
+
+/* Icons */
+body.admin-color-mymono #adminmenu li.menu-top .wp-menu-image,
+body.admin-color-mymono #adminmenu div.wp-menu-image:before,
+body.admin-color-mymono #adminmenu li.wp-has-submenu .wp-submenu .wp-menu-image {
+	color: inherit;
+}
+body.admin-color-mymono #adminmenu li.menu-top.wp-has-current-submenu .wp-menu-image,
+body.admin-color-mymono #adminmenu li.menu-top.wp-has-current-submenu div.wp-menu-image:before,
+body.admin-color-mymono #adminmenu li.wp-has-current-submenu .wp-submenu .wp-menu-image {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+body.admin-color-mymono #wpadminbar {
+	background-color: var(--mymono-adminbar);
+	color: var(--mymono-adminbar-text);
+}
+body.admin-color-mymono #wpadminbar a,
+body.admin-color-mymono #wpadminbar .ab-item,
+body.admin-color-mymono #wpadminbar .ab-label {
+	color: var(--mymono-adminbar-text);
+}
+body.admin-color-mymono #wpadminbar .quicklinks .ab-sub-wmymonoper,
+body.admin-color-mymono #wpadminbar .ab-submenu {
+	background-color: var(--mymono-adminbar);
+}
+body.admin-color-mymono #wpadminbar ul li:hover {
+	background-color: var(--mymono-adminbar-darker);
+	color: var(--mymono-adminbar-text);
+}
+body.admin-color-mymono #wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover > a,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop ul li a:focus,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop ul li a:focus strong,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop ul li a:hover,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop ul li a:hover strong,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop.hover ul li a:focus,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop.hover ul li a:hover,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop.hover ul li div[tabindex]:focus,
+body.admin-color-mymono #wpadminbar .quicklinks .menupop.hover ul li div[tabindex]:hover,
+body.admin-color-mymono #wpadminbar li #adminbarsearch.adminbar-focused:before,
+body.admin-color-mymono #wpadminbar li .ab-item:focus .ab-icon:before,
+body.admin-color-mymono #wpadminbar li .ab-item:focus:before,
+body.admin-color-mymono #wpadminbar li a:focus .ab-icon:before,
+body.admin-color-mymono #wpadminbar li.hover .ab-icon:before,
+body.admin-color-mymono #wpadminbar li.hover .ab-item:before,
+body.admin-color-mymono #wpadminbar li:hover #adminbarsearch:before,
+body.admin-color-mymono #wpadminbar li:hover .ab-icon:before,
+body.admin-color-mymono #wpadminbar li:hover .ab-item:before,
+body.admin-color-mymono #wpadminbar.nojs .quicklinks .menupop:hover ul li a:focus,
+body.admin-color-mymono #wpadminbar.nojs .quicklinks .menupop:hover ul li a:hover,
+body.admin-color-mymono #wpadminbar:not(.mobile) > #wp-toolbar a:focus span.ab-label,
+body.admin-color-mymono #wpadminbar:not(.mobile) > #wp-toolbar li:hover span.ab-label,
+body.admin-color-mymono #wpadminbar > #wp-toolbar li.hover span.ab-label,
+body.admin-color-mymono #wpadminbar .ab-empty-item,
+body.admin-color-mymono #wpadminbar a.ab-item,
+body.admin-color-mymono #wpadminbar > #wp-toolbar span.ab-label,
+body.admin-color-mymono #wpadminbar > #wp-toolbar span.noticon {
+	color: var(--mymono-adminbar-text);
+}
+
+/* In-page elements */
+body.admin-color-mymono a,
+body.admin-color-mymono.wp-core-ui .button-link {
+	color: var(--mymono-adminbar);
+}
+body.admin-color-mymono.wp-core-ui .button,
+body.admin-color-mymono.wp-core-ui .button-secondary,
+.components-button.is-tertiary {
+	color: var(--mymono-adminbar);
+	border-color: var(--mymono-adminbar);
+}
+body.admin-color-mymono.wp-core-ui .button-primary,
+body.admin-color-mymono .components-button.is-primary {
+	background-color: var(--mymono-base);
+	border-color: var(--mymono-base);
+	color: var(--mymono-text);
+}
+body.admin-color-mymono.wp-core-ui .button-primary.focus,
+body.admin-color-mymono.wp-core-ui .button-primary.hover,
+body.admin-color-mymono.wp-core-ui .button-primary:focus,
+body.admin-color-mymono.wp-core-ui .button-primary:hover {
+	background-color: var(--mymono-base-lighter);
+	border-color: var(--mymono-base-lighter);
+	color: var(--mymono-text);
+}
+body.admin-color-mymono .wmymono .page-title-action {
+	border-color: var(--mymono-base);
+}
+body.admin-color-mymono .components-form-toggle.is-checked .components-form-toggle__track {
+	background-color: var(--mymono-base);
+	border-color: var(--mymono-base);
+}
+body.admin-color-mymono .health-check-tab.active,
+body.admin-color-mymono .privacy-settings-tab.active {
+	box-shadow: inset 0 -3px var(--mymono-base);
+}
+body.admin-color-mymono #collapse-button {
+	color: var(--mymono-text);
+	opacity: 0.5;
+}

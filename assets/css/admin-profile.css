@@ -1,0 +1,24 @@
+.color-option {
+	position: relative;
+}
+
+.mymono-color-option .dashicons-randomize,
+.mymono-color-option .dashicons-color-picker {
+	font-size: 16px;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.dashicons-randomize:hover,
+.dashicons-color-picker:hover {
+	color: #00a0d2;
+}
+
+/* Hide Iris buttons to prevent layout break. */
+.mymono-color-option .wp-picker-container {
+	position: absolute !important;
+}
+
+.mymono-color-option .wp-picker-container button {
+	display: none !important;
+}
