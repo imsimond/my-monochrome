@@ -192,7 +192,7 @@ function mymono_register_mymono_palette_option() {
 	wp_admin_css_color(
 		'mymono',
 		__( 'Mono', 'my-monochrome' ),
-		'',
+		plugin_dir_url( __FILE__ ) . 'assets/css/admin-colors.css',
 		array( $palette['base_color'] )
 	);
 }
@@ -364,6 +364,8 @@ function mymono_enqueue_color_picker( $hook ) {
 	$palette  = mymono_get_or_generate_palette( $user_id );
 	$settings = array(
 		'baseColor'   => $palette['base_color'],
+		'cssVars'     => mymono_get_admin_css_vars( $palette ),
+		'cssUrl'      => plugin_dir_url( __FILE__ ) . 'assets/css/admin-colors.css',
 		'setNonce'    => wp_create_nonce( 'mymono-set-palette' ),
 		'randomNonce' => wp_create_nonce( 'mymono-randomize-palette' ),
 		'userId'      => $user_id,
