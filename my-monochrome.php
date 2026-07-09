@@ -4,7 +4,8 @@
  * Description:       Generate a custom WordPress admin theme from a single colour.
  * Version:           2026.02
  * Author:            Simon Dickson
- * License:           GPL-2.0-or-later
+ * License:           MIT
+ * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       my-monochrome
  *
  * @package           My_Monochrome

@@ -5,8 +5,8 @@ Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 8.0
 Stable tag: 2026.02
-License: GPL-2.0-or-later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: MIT
+License URI: https://opensource.org/licenses/MIT
 
 Bored of the default WordPress admin color schemes? So was I. Generate color schemes to your heart's content, with a single click.
 
